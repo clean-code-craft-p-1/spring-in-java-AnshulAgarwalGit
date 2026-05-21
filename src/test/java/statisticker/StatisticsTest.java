@@ -14,7 +14,7 @@ public class StatisticsTest
     public void reportsAverageMinMaxx()
     {
         Float[] numbers = {98.6f, 98.2f, 97.8f, 102.2f};
-        List<___> numberList = Arrays.asList(numbers);
+        List<Float> numberList = Arrays.asList(numbers);
 
         Statistics.Stats s = Statistics.getStatistics(numberList);
 
@@ -26,7 +26,7 @@ public class StatisticsTest
     @Test
     public void reportsNaNForEmptyInput()
     {
-        List<___> emptyList = new ArrayList<___>();
+        List<Float> emptyList = new ArrayList<Float>();
 
         Statistics.Stats s = Statistics.getStatistics(emptyList);
 
@@ -34,5 +34,29 @@ public class StatisticsTest
         // Float.NaN (not-a-number), as described in
         // https://www.geeksforgeeks.org/nan-not-number-java/
         // Specify the asserts here and implement accordingly.
+        assertTrue(Float.isNaN(s.average));
+        assertTrue(Float.isNaN(s.min));
+        assertTrue(Float.isNaN(s.max));
+    }
+
+    @Test
+    public void reportsAllStatsForSingleInput()
+    {
+        List<Float> numberList = Arrays.asList(101.5f);
+
+        Statistics.Stats s = Statistics.getStatistics(numberList);
+
+        float epsilon = 0.001f;
+        assertEquals(s.average, 101.5f, epsilon);
+        assertEquals(s.min, 101.5f, epsilon);
+        assertEquals(s.max, 101.5f, epsilon);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void rejectsLikelyCelsiusInput()
+    {
+        List<Float> numberList = Arrays.asList(36.5f, 37.0f, 38.4f);
+
+        Statistics.getStatistics(numberList);
     }
 }
